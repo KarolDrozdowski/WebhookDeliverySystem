@@ -62,6 +62,9 @@ It stores, among others:
 - `updated_at`
 - `delivered_at`
 
+`payload_hash` is used for efficient deduplication. The payload is first normalized into canonical JSON, then hashed with SHA-256. This lets the service compare payloads reliably even if JSON key order differs, while still keeping the full `payload_json` for actual delivery.
+
+
 ### `webhook_attempts`
 
 History of individual delivery attempts:
@@ -73,11 +76,6 @@ History of individual delivery attempts:
 - response excerpt,
 - error message.
 
-## Why payload hashing exists
-
-`payload_hash` is used for efficient deduplication.
-
-The payload is first normalized into canonical JSON, then hashed with SHA-256. This lets the service compare payloads reliably even if JSON key order differs, while still keeping the full `payload_json` for actual delivery.
 
 ## Retry and reliability
 
