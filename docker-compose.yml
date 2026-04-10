@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: webhook-delivery-app
+    environment:
+      APP_NAME: Webhook Delivery System
+      DATABASE_URL: sqlite:////data/webhooks.db
+      WORKER_POLL_INTERVAL_SECONDS: "1"
+      WORKER_MAX_CONCURRENCY: "5"
+      DELIVERY_TIMEOUT_SECONDS: "10"
+      RETRY_DELAY_SECONDS: "5"
+    ports:
+      - "8000:8000"
+    volumes:
+      - webhook_data:/data
+    depends_on:
+      - httpbin
+
+  httpbin:
+    image: mccutchen/go-httpbin:v2.15.0
+    container_name: webhook-delivery-httpbin
+    ports:
+      - "8081:8080"
+
+volumes:
+  webhook_data:
